@@ -8,7 +8,10 @@
         <ul>
           <li>{{goods.name}}</li>
           <li>{{goods.title}}</li>
-          <li class="skuParams"><span>规格选择:</span><span class="skuParamSelect" v-for="sku in skus" @click="changeSku(sku)" :key="sku.skuId">{{sku.skuParams.replace('{','').replace('}','')}}</span></li>
+          <li class="skuParams">
+            <span>规格选择:</span>
+            <span class="skuParamSelect" :class="{selectSku: currentIndex === index}" v-for="(sku,index) in skus" @click="changeSku(sku,index)" :key="sku.skuId">{{sku.skuParams.replace('{','').replace('}','')}}</span>
+          </li>
           <!--{{JSON.stringify(skus[0].skuParams).replace('\"','')}}-->
           <li>当前选中:{{currentSku.skuParams.replace('{','').replace('}','')}}</li>
           <li>价格：{{currentSku.price}}元</li>
@@ -30,12 +33,14 @@ export default {
     return {
       goods: {},
       currentSku: {},
+      currentIndex: 0,
       isSelect: false,
       skus: []
     }
   },
   methods: {
-    changeSku(sku){
+    changeSku(sku, index){
+      this.currentIndex = index
       this.currentSku = sku
     },
     doBuy(){
@@ -134,5 +139,8 @@ span {
 }
 .goods-info-top img {
   width: 300px;
+}
+.selectSku {
+  background-color: #8cc5ff;
 }
 </style>
